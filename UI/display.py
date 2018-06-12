@@ -17,7 +17,7 @@ class General_Display:
 
 class Menu(General_Display):
     def load(self, screen):
-        self.screen.addstr("test")
+        self.screen.addstr(0,0,"test", curses.color_pair(1))
         self.screen.refresh()
         try:
             while True:
@@ -29,6 +29,7 @@ class MainDisplay:
     def __init__(self):
         #first resize the screen to fit the entire window
         sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=params.WINDOW_HEIGHT,cols=params.WINDOW_WIDTH))
+        sys.stdout.flush()
 
         #initialize the first screen objects
         self.stdscr = curses.initscr()
