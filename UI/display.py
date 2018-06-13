@@ -54,8 +54,13 @@ class Menu(General_Display):
         return self.win
 
     def load_text(self, window):
-        sMenu(window, ["test", "test2"])
-        sleep(5)
+        t = sMenu(window, ["test", "test2"])
+
+        try:
+            while True:
+                t.update()
+        except KeyboardInterrupt:
+            sleep(1)
 
 class MainDisplay:
     def __init__(self):
@@ -70,6 +75,7 @@ class MainDisplay:
         #set up initial configurations
         curses.cbreak()
         curses.noecho()
+        curses.mousemask(1)
         self.stdscr.keypad(True)
         curses.curs_set(0);
 

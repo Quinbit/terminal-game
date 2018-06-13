@@ -16,4 +16,17 @@ class sMenu():
             sleep(step_time)
 
     def update(self):
-        pass
+        event = self.screen.getch()
+        self.screen.erase()
+        self.screen.box()
+        self.screen.addstr(str(event))
+        self.screen.refresh()
+
+
+        if event == curses.KEY_MOUSE:
+            _, x, y, _, _ = curses.getmouse()
+            #if (y < self.HEIGHT) and (y > 0) and (x < self.WIDTH) and (x > 0):
+            self.screen.erase()
+            self.screen.box()
+            self.screen.addstr(str((x,y)))
+            self.screen.refresh()
