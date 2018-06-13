@@ -3,6 +3,7 @@ from time import sleep
 from curses import wrapper
 import sys
 import params
+from selection_menu import sMenu
 
 class General_Display:
     def __init__(self, screen):
@@ -23,7 +24,9 @@ class Menu(General_Display):
         self.HEIGHT = size[0]
         self.WIDTH = size[1]
 
-        self.text_win = self.growing_square(13, 1, (10,0))
+        #load the actual menu window
+        self.text_win = self.growing_square(13, params.LOAD_TIME, (10,0))
+        self.load_text(self.text_win)
 
     #tells the screen to create
     def growing_square(self,final_size, time, offset):
@@ -47,8 +50,12 @@ class Menu(General_Display):
             sleep(steps_per_sec)
             box_curr_size += 1
 
-        sleep(5)
+        sleep(1)
         return self.win
+
+    def load_text(self, window):
+        sMenu(window, ["test", "test2"])
+        sleep(5)
 
 class MainDisplay:
     def __init__(self):
