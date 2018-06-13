@@ -17,13 +17,38 @@ class General_Display:
 
 class Menu(General_Display):
     def load(self, screen):
-        self.screen.addstr(0,0,"test", curses.color_pair(1))
+        #self.screen.addstr(0,0,"test", curses.color_pair(1))
         self.screen.refresh()
-        try:
-            while True:
-                pass
-        except:
-            pass
+        size = self.screen.getmaxyx()
+        self.HEIGHT = size[0]
+        self.WIDTH = size[1]
+
+        self.text_win = self.growing_square(13, 1, (10,0))
+
+    #tells the screen to create
+    def growing_square(self,final_size, time, offset):
+        #make sure it will be able to grow
+        assert(final_size > 1)
+
+        box_curr_size = 1
+        self.win = self.screen.derwin(box_curr_size, box_curr_size, self.HEIGHT//2, self.WIDTH//2)
+
+        #set up the correct number of steps
+        step = final_size - 1.0
+
+        steps_per_sec = time / step
+
+        while box_curr_size != final_size:
+            self.win.erase()
+            self.win.mvwin(self.HEIGHT//2 - box_curr_size + offset[0], self.WIDTH//2 - box_curr_size*3 + offset[1])
+            self.win.resize(box_curr_size*2, box_curr_size*6)
+            self.win.box()
+            self.win.refresh()
+            sleep(steps_per_sec)
+            box_curr_size += 1
+
+        sleep(5)
+        return self.win
 
 class MainDisplay:
     def __init__(self):
@@ -33,12 +58,13 @@ class MainDisplay:
 
         #initialize the first screen objects
         self.stdscr = curses.initscr()
-        self.stdscr.clear()
+        self.stdscr.erase()
 
         #set up initial configurations
         curses.cbreak()
         curses.noecho()
         self.stdscr.keypad(True)
+        curses.curs_set(0);
 
         Menu(self.stdscr)
 
