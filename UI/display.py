@@ -54,13 +54,11 @@ class Menu(General_Display):
         return self.win
 
     def load_text(self, window):
-        t = sMenu(window, ["test", "test2"])
+        t = sMenu(window, ["Play Game", "Create Game", "Options", "Help"])
+        end = False
 
-        try:
-            while True:
-                t.update()
-        except KeyboardInterrupt:
-            sleep(1)
+        while end == False:
+            end = t.update()
 
 class MainDisplay:
     def __init__(self):
@@ -76,6 +74,8 @@ class MainDisplay:
         curses.cbreak()
         curses.noecho()
         curses.mousemask(1)
+        curses.start_color()
+        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
         self.stdscr.keypad(True)
         curses.curs_set(0);
 
