@@ -1,4 +1,7 @@
 import curses
+from time import sleep
+import numpy as np
+import params
 
 TERM = '''
  |__   __|  ____|  __ \|  \/  |
@@ -7,9 +10,3 @@ TERM = '''
     | |  | |____| | \ \| |  | |
     |_|  |______|_|  \_\_|  |_|
     '''
-
-class art:
-    def __init__(self, string):
-        self.string = string
-
-    def glide_in_top(self):

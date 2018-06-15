@@ -57,7 +57,6 @@ class Menu(General_Display):
     def load_items(self, window):
         text = sMenu(window, ["Play Game", "Create Game", "Options", "Help"])
         end = False
-        
 
         while end == False:
             end = text.update()
@@ -82,6 +81,8 @@ class MainDisplay:
         curses.curs_set(0);
 
         Menu(self.stdscr)
+        a = ascii_art.art(ascii_art.TERM, self.stdscr)
+        a.glide_in_top((0, 200))
 
         self.close()
 
