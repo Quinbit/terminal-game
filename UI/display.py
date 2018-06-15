@@ -4,6 +4,7 @@ from curses import wrapper
 import sys
 import params
 from selection_menu import sMenu
+import ascii_art
 
 class General_Display:
     def __init__(self, screen):
@@ -26,7 +27,7 @@ class Menu(General_Display):
 
         #load the actual menu window
         self.text_win = self.growing_square(13, params.LOAD_TIME, (10,0))
-        self.load_text(self.text_win)
+        self.load_items(self.text_win)
 
     #tells the screen to create
     def growing_square(self,final_size, time, offset):
@@ -53,12 +54,13 @@ class Menu(General_Display):
         sleep(1)
         return self.win
 
-    def load_text(self, window):
-        t = sMenu(window, ["Play Game", "Create Game", "Options", "Help"])
+    def load_items(self, window):
+        text = sMenu(window, ["Play Game", "Create Game", "Options", "Help"])
         end = False
+        
 
         while end == False:
-            end = t.update()
+            end = text.update()
 
 class MainDisplay:
     def __init__(self):
