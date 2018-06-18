@@ -1,12 +1,13 @@
 import curses
 from time import sleep
 import numpy as np
-import params
+from UI import params
 
-TERM = '''
+TERM ='''
+  _______ ______ _____  __  __
  |__   __|  ____|  __ \|  \/  |
     | |  | |__  | |__) | \  / |
     | |  |  __| |  _  /| |\/| |
     | |  | |____| | \ \| |  | |
-    |_|  |______|_|  \_\_|  |_|
+    |_|  |______|_|  \_\_|  | |
     '''

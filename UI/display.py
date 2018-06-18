@@ -2,13 +2,16 @@ import curses
 from time import sleep
 from curses import wrapper
 import sys
-import params
-from selection_menu import sMenu
-import ascii_art
+from UI import params
+from UI.selection_menu import sMenu
+from UI import ascii_art
+from UI import movement
+from UI.string_display import display_string
 
 class General_Display:
     def __init__(self, screen):
         self.screen = screen
+        self.elements = {}
         size = screen.getmaxyx()
         self.screen.clear()
         self.screen.refresh()
@@ -16,6 +19,14 @@ class General_Display:
 
     def load(self, screen):
         pass
+
+    def refresh_all(self):
+        self.screen.erase()
+        for key in self.elements.keys():
+            self.elements[key].update()
+
+    def add_elem(self, elem, elem_name):
+        self.elements[elem_name] = elem
 
 class Menu(General_Display):
     def load(self, screen):
@@ -27,15 +38,15 @@ class Menu(General_Display):
 
         #load the actual menu window
         self.text_win = self.growing_square(13, params.LOAD_TIME, (10,0))
-        self.load_items(self.text_win)
 
     #tells the screen to create
-    def growing_square(self,final_size, time, offset):
+    def growing_square(self, final_size, time, offset):
         #make sure it will be able to grow
         assert(final_size > 1)
 
         box_curr_size = 1
         self.win = self.screen.derwin(box_curr_size, box_curr_size, self.HEIGHT//2, self.WIDTH//2)
+        self.win.nodelay(True)
 
         #set up the correct number of steps
         step = final_size - 1.0
@@ -58,8 +69,23 @@ class Menu(General_Display):
         text = sMenu(window, ["Play Game", "Create Game", "Options", "Help"])
         end = False
 
+        new_sprite = {"term": ascii_art.TERM}
+
+        m = movement.MovingObject(new_sprite, self.screen)
+        m.move([0, self.WIDTH//2 - m.sizes[m.curr_sprite].WIDTH//2])
+        self.add_elem(m, 'term')
+        self.add_elem(text, "menu")
+
+        self.elements['term'].glide_move([1,0], [10, 0])
+
+        for i in range(10):
+            sleep(0.1)
+            self.refresh_all()
+
         while end == False:
             end = text.update()
+
+        return end
 
 class MainDisplay:
     def __init__(self):
@@ -69,6 +95,7 @@ class MainDisplay:
 
         #initialize the first screen objects
         self.stdscr = curses.initscr()
+        self.stdscr.nodelay(True)
         self.stdscr.erase()
 
         #set up initial configurations
@@ -80,9 +107,13 @@ class MainDisplay:
         self.stdscr.keypad(True)
         curses.curs_set(0);
 
-        Menu(self.stdscr)
-        a = ascii_art.art(ascii_art.TERM, self.stdscr)
-        a.glide_in_top((0, 200))
+        #start up the main menu
+        m = Menu(self.stdscr)
+        #get the user's input
+        option = m.load_items(m.text_win)
+
+        if option == 1:
+            
 
         self.close()
 
@@ -90,9 +121,8 @@ class MainDisplay:
         pass
 
     def close(self):
+        #close everything down properly
         curses.nocbreak()
         self.stdscr.keypad(False)
         curses.echo()
         curses.endwin()
-
-a = MainDisplay()

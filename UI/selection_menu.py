@@ -1,8 +1,9 @@
 import curses
 from time import sleep
-import params
+from UI import params
+from UI.string_display import display_string
 
-class sMenu():
+class sMenu:
     def __init__(self, screen, options):
         self.screen = screen
         self.HEIGHT, self.WIDTH = self.screen.getmaxyx()
@@ -15,9 +16,9 @@ class sMenu():
         for i in range(len(options)):
 
             if i == 0:
-                self.screen.addstr(self.SPACING * (i+1) - 1, self.WIDTH//2 - len(options[i])//2, options[i], self.highlight_attr)
+                display_string(self.screen, (self.SPACING * (i+1) - 1, self.WIDTH//2 - len(options[i])//2),  options[i], attr=self.highlight_attr)
             else:
-                self.screen.addstr(self.SPACING * (i+1) - 1, self.WIDTH//2 - len(options[i])//2, options[i])
+                display_string(self.screen, (self.SPACING * (i+1) - 1, self.WIDTH//2 - len(options[i])//2),  options[i])
 
             self.screen.refresh()
             sleep(step_time)
@@ -26,7 +27,6 @@ class sMenu():
 
     def update(self):
         event = self.screen.getch()
-        self.screen.erase()
 
         #curses base values wasn't working for me soooooooo rip
         if event == 10:
@@ -43,9 +43,9 @@ class sMenu():
 
         for i in range(self.NUM_ELEMENTS):
             if (i+1) == self.highlighted:
-                self.screen.addstr(self.SPACING * (i+1) - 1, self.WIDTH//2 - len(self.options[i])//2, self.options[i], self.highlight_attr)
+                display_string(self.screen, (self.SPACING * (i+1) - 1, self.WIDTH//2 - len(self.options[i])//2), self.options[i], attr=self.highlight_attr)
             else:
-                self.screen.addstr(self.SPACING * (i+1) - 1, self.WIDTH//2 - len(self.options[i])//2, self.options[i])
+                display_string(self.screen, (self.SPACING * (i+1) - 1, self.WIDTH//2 - len(self.options[i])//2), self.options[i])
 
         self.screen.box()
         self.screen.refresh()
