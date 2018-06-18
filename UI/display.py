@@ -66,7 +66,7 @@ class Menu(General_Display):
         return self.win
 
     def load_items(self, window):
-        text = sMenu(window, ["Play Game", "Create Game", "Options", "Help"])
+        text = sMenu(window, ["Play Game", "Create Game", "Setup Game", "Options", "Help", "Close"])
         end = False
 
         new_sprite = {"term": ascii_art.TERM}
@@ -108,17 +108,29 @@ class MainDisplay:
         curses.curs_set(0);
 
         #start up the main menu
-        m = Menu(self.stdscr)
-        #get the user's input
-        option = m.load_items(m.text_win)
+        option = 1
+        while option != 6:
+            m = Menu(self.stdscr)
+            #get the user's input
+            option = m.load_items(m.text_win)
 
-        if option == 1:
-            
-
-        self.close()
-
-    def run(self):
-        pass
+            if option == 1:
+                #play game that is in the load section
+                pass
+            if option == 2:
+                #begin the level creation process
+                pass
+            if option == 3:
+                #begin process where you specify certain levels to load when playing
+                pass
+            if option == 4:
+                #Set options for sound and stuff
+                pass
+            if option == 5:
+                #link to github probably
+                pass
+            if option == 6:
+                self.close()
 
     def close(self):
         #close everything down properly
